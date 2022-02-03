@@ -9,6 +9,11 @@ export async function main(ns) {
 		data['target'] = ns.getHostname()
 	}
 
+	// perform a single hack on startup
+	if (['CSEC', 'avmnite-02h', 'I.I.I.I', 'run4theh111z'].includes(data['target'])) {
+		await ns.hack(data['target'])
+	}
+
 	while(true) {
 		if (ns.getServerSecurityLevel(data['target']) > ns.getServerMinSecurityLevel(data['target']) + 5) {
 			await ns.weaken(data['target'])

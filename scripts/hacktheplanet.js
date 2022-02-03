@@ -42,17 +42,17 @@ export async function main(ns) {
 					}
 				}
 				if (ns.hasRootAccess(server) && ns.getServerRequiredHackingLevel(server) <= ns.getHackingLevel()) {
-					await ns.kill("hackit.js", server)
-					await ns.scp("hackit.js", server)
+					await ns.kill("/scripts/hackit.js", server)
+					await ns.scp("/scripts/hackit.js", server)
 					// figure out how many threads we can run in parallel
 					let numthreads = 1
-					while (ns.getScriptRam("hackit.js", server) * numthreads < ns.getServerMaxRam(server)) {
+					while (ns.getScriptRam("/scripts/hackit.js", server) * numthreads < ns.getServerMaxRam(server)) {
 						numthreads++
 					}
 					if (numthreads == 1) {
-						await ns.exec("hackit.js", server, 1)
+						await ns.exec("/scripts/hackit.js", server, 1)
 					} else {
-						await ns.exec("hackit.js", server, numthreads-1)
+						await ns.exec("/scripts/hackit.js", server, numthreads-1)
 					}
 				}
 				if (ns.ls(server).length > 0) {

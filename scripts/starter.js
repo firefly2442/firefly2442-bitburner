@@ -2,15 +2,15 @@
 export async function main(ns) {
 
 	// start getting money and experience
-	ns.exec("hacktheplanet.js", "home", 1)
-	ns.exec("hackit.js", "home", 25000, "--target", "n00dles")
+	ns.exec("/scripts/hacktheplanet.js", "home", 1)
+	ns.exec("/scripts/hackit.js", "home", 50000, "--target", "n00dles")
 
 	// rerun when we have a stronger hacking level and can connect to more machines
 	while (ns.getHackingLevel() < 50) {
 		await ns.sleep(5000)
 	}
-	ns.kill("hacktheplanet.js", "home")
-	ns.exec("hacktheplanet.js", "home", 1)
+	ns.kill("/scripts/hacktheplanet.js", "home")
+	ns.exec("/scripts/hacktheplanet.js", "home", 1)
 
 	// purchase tor router, requires Singularity API
 	// while (ns.getServerMoneyAvailable("home") < 200000) {
@@ -35,11 +35,11 @@ export async function main(ns) {
 	// }
 
 	// relaunch to make use of new injections
-	ns.kill("hacktheplanet.js", "home")
-	ns.exec("hacktheplanet.js", "home", 1)
+	ns.kill("/scripts/hacktheplanet.js", "home")
+	ns.exec("/scripts/hacktheplanet.js", "home", 1)
 
 	// start to grow Hacknet
-	ns.exec("growhacknet.js", "home", 1)
+	ns.exec("/scripts/growhacknet.js", "home", 1)
 
 	// hack CSEC (CyberSec faction)
 	while (await !ns.hasRootAccess("CSEC")) {
@@ -82,8 +82,8 @@ export async function main(ns) {
 	}
 	
 	// kill off launched scripts
-	ns.kill("hackit.js", "home")
-	ns.kill("growhacknet.js", "home")
+	ns.kill("/scripts/hackit.js", "home")
+	ns.kill("/scripts/growhacknet.js", "home")
 
 	ns.tprint("Finished with starter")
 }

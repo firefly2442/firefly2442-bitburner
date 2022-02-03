@@ -3,7 +3,8 @@ export async function main(ns) {
 	//Uses a DFS to find the path to the specified server and then prints the path
 	//to Terminal.
 
-	// $ run test.js --target run4theh111z
+	// $ run findtarget.js --target run4theh111z
+	// $ run findtarget.js --target The-Cave
 	const data = ns.flags([
 		['target', '']
   	])

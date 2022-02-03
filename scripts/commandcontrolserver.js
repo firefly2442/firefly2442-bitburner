@@ -34,8 +34,8 @@ export async function main(ns) {
 		}
 	} else if (data['mode'] == 'server') {
 		// deploy the server that looks for responses
-		await ns.kill("commandcontrolresults.js", "home")
-		await ns.exec("commandcontrolresults.js", "home", 1)
+		await ns.kill("/scripts/commandcontrolresults.js", "home")
+		await ns.exec("/scripts/commandcontrolresults.js", "home", 1)
 
 		// deploy this code to all available nodes and start it up
 		let servers = []
@@ -49,9 +49,9 @@ export async function main(ns) {
 		}
 		for (let server of servers) {
 			if (ns.hasRootAccess(server) && server != "home") {
-				await ns.kill("commandcontrolserver.js", server)
-				await ns.scp("commandcontrolserver.js", server)
-				await ns.exec("commandcontrolserver.js", server, 1)
+				await ns.kill("/scripts/commandcontrolserver.js", server)
+				await ns.scp("/scripts/commandcontrolserver.js", server)
+				await ns.exec("/scripts/commandcontrolserver.js", server, 1)
 			}
 		}
 		ns.tprint("Finished deploying command and control clients")
