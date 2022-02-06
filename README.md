@@ -5,3 +5,5 @@ Code and scripts for the game [Bitburner](https://store.steampowered.com/app/181
 ## References
 
 * [Bitburner Visual Studio Code Extension](https://github.com/bitburner-official/bitburner-vscode)
+* [https://github.com/annapoulakos/bitburner](https://github.com/annapoulakos/bitburner)
+* [https://github.com/thezanke/thezanke-bitburner](https://github.com/thezanke/thezanke-bitburner)
