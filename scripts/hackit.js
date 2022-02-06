@@ -6,22 +6,29 @@ export async function main(ns) {
   	])
 	
 	if (data['target'] == '') {
-		data['target'] = ns.getHostname()
-	}
-
-	// perform a single hack on startup
-	if (['CSEC', 'avmnite-02h', 'I.I.I.I', 'run4theh111z'].includes(data['target'])) {
-		await ns.hack(data['target'])
+		data['target'] = ns.getHostname() // default to target itself
 	}
 
 	while(true) {
-		if (ns.getServerSecurityLevel(data['target']) > ns.getServerMinSecurityLevel(data['target']) + 5) {
-			await ns.weaken(data['target'])
-		} else if (ns.getServerMoneyAvailable(data['target']) < ns.getServerMaxMoney(data['target']) * 0.75) {
-			await ns.grow(data['target'])
+		let freeramgb = ns.getServerMaxRam(ns.getHostname()) - ns.getServerUsedRam(ns.getHostname())
+		if (ns.getHostname() == "home") {freeramgb = freeramgb * 0.95} //reserve a little bit for other stuff
+		let availablegrowweakenthreads = Math.floor(freeramgb / ns.getScriptRam("/scripts/lib/grow.js"))
+		let availablehackthreads = Math.floor(freeramgb / ns.getScriptRam("/scripts/lib/hack.js"))
+
+		if (availablegrowweakenthreads == 0) {availablegrowweakenthreads++}
+		if (availablehackthreads == 0) {availablehackthreads++}
+
+		if (ns.getServerSecurityLevel(data['target']) >= ns.getServerMinSecurityLevel(data['target']) * 0.99 &&
+			ns.getServerMoneyAvailable(data['target']) >= ns.getServerMaxMoney(data['target']) * 0.99) {
+			await ns.exec("/scripts/lib/hack.js", ns.getHostname(), availablehackthreads, "--target", data['target'])
+		} else if (ns.getServerSecurityLevel(data['target']) > ns.getServerMinSecurityLevel(data['target']) * 2) {
+			// TODO: could add more logic to tweak the number of threads to save RAM
+			await ns.exec("/scripts/lib/weaken.js", ns.getHostname(), availablegrowweakenthreads, "--target", data['target'])
 		} else {
-			await ns.hack(data['target'])
+			// TODO: could add more logic to tweak the number of threads to save RAM
+			await ns.exec("/scripts/lib/grow.js", ns.getHostname(), availablegrowweakenthreads, "--target", data['target'])
 		}
-		await ns.sleep(1);
+
+		await ns.sleep(10);
 	}
 }

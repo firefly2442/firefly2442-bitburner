@@ -3,7 +3,6 @@ export async function main(ns) {
 
 	// start getting money and experience
 	ns.exec("/scripts/hacktheplanet.js", "home", 1)
-	ns.exec("/scripts/hackit.js", "home", 50000, "--target", "n00dles")
 
 	// rerun when we have a stronger hacking level and can connect to more machines
 	while (ns.getHackingLevel() < 50) {
@@ -80,6 +79,13 @@ export async function main(ns) {
 			await ns.hack(server, {threads: 1})
 		}
 	}
+
+	// hack The-Cave
+
+	// get to 3000 hacking experience
+
+	// enter The-Cave and then perform a scan
+	// enter the only available entry and continue...
 	
 	// kill off launched scripts
 	ns.kill("/scripts/hackit.js", "home")
