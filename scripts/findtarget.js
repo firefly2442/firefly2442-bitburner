@@ -45,9 +45,11 @@ export async function main(ns) {
 	ns.print("Target found. About to re-create path");
 	ns.print("parentTracker size: " + parentTracker.length);
 	let path = [];
+	let commands = [];
 	let i = target;
 	while (i != ns.getHostname()) {
 		path.push(i);
+		commands.push("connect " + i + ";")
 		ns.print("Re-creating path at " + i);
 
 		//Search through the parentTracker array to find this nodes parent
@@ -60,7 +62,10 @@ export async function main(ns) {
 		}
 	}
 	path.push("home")
+	commands.push("connect home;")
 
 	path.reverse();
 	ns.tprint(path);
+	commands.reverse()
+	ns.tprint(commands.toString().replaceAll(",", ""))
 }
