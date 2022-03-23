@@ -3,9 +3,7 @@ import * as connect from '/scripts/lib/connect.js';
 
 export async function main(ns) {
 
-	// start our career and augmentations checks
-	ns.exec("/scripts/singularity/career.js", "home", 1)
-	ns.exec("/scripts/singularity/augmentations.js", "home", 1)
+	ns.universityCourse("rothman university", "Study Computer Science", false)
 
 	// start getting money and experience
 	ns.exec("/scripts/hacktheplanet.js", "home", 1)
@@ -15,11 +13,18 @@ export async function main(ns) {
 	while (ns.getHackingLevel() < 50) {
 		await ns.sleep(5000)
 	}
+	// code starter program to bootstrap ability to make some decent money
+	ns.createProgram("BruteSSH.exe", false)
+
 	for (let p of ns.ps("home")) {
-		if (p.filename == "/scripts/hackit.js") {
+		if (["/scripts/hackit.js", "/scripts/lib/grow.js", "/scripts/lib/hack.js", "/scripts/lib/weaken.js"].includes(p.filename)) {
 			ns.kill(p.pid, "home")
 		}
 	}
+	// start our career and augmentations checks
+	ns.exec("/scripts/singularity/career.js", "home", 1)
+	ns.exec("/scripts/singularity/augmentations.js", "home", 1)
+
 	while (ns.exec("/scripts/hacktheplanet.js", "home", 1) == 0) {
 		await ns.sleep(1000)
 	}
@@ -51,7 +56,17 @@ export async function main(ns) {
 		moretoinstall = false
 		for (let toinstall of topurchase) {
 			if (!ns.ls("home").includes(toinstall)) {
-				ns.purchaseProgram(toinstall)
+				if (ns.purchaseProgram(toinstall)) {
+					// relaunch to make use of new program
+					for (let p of ns.ps("home")) {
+						if (["/scripts/hackit.js", "/scripts/lib/grow.js", "/scripts/lib/hack.js", "/scripts/lib/weaken.js"].includes(p.filename)) {
+							ns.kill(p.pid, "home")
+						}
+					}
+					while (ns.exec("/scripts/hacktheplanet.js", "home", 1) == 0) {
+						await ns.sleep(1000)
+					}
+				}
 				moretoinstall = true
 			}
 		}
@@ -61,7 +76,7 @@ export async function main(ns) {
 
 	// relaunch to make use of new programs
 	for (let p of ns.ps("home")) {
-		if (p.filename == "/scripts/hackit.js") {
+		if (["/scripts/hackit.js", "/scripts/lib/grow.js", "/scripts/lib/hack.js", "/scripts/lib/weaken.js"].includes(p.filename)) {
 			ns.kill(p.pid, "home")
 		}
 	}

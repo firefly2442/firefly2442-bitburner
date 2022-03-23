@@ -3,7 +3,7 @@ export async function main(ns) {
 
     // be a poor graduate student
     ns.universityCourse("rothman university", "Study Computer Science", false)
-    while (ns.getHackingLevel() < 200) {
+    while (ns.getHackingLevel() < 150) {
 		await ns.sleep(5000)
 	}
     ns.stopAction()
