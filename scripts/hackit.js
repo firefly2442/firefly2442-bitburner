@@ -20,7 +20,7 @@ export async function main(ns) {
 
 		if (!running) {
 			let freeramgb = ns.getServerMaxRam(ns.getHostname()) - ns.getServerUsedRam(ns.getHostname())
-			if (ns.getHostname() == "home") {freeramgb = freeramgb * 0.95} //reserve a little bit for other stuff
+			if (ns.getHostname() == "home") {freeramgb = freeramgb * 0.9} //reserve a little bit for other stuff
 			let availablegrowweakenthreads = Math.floor(freeramgb / ns.getScriptRam("/scripts/lib/grow.js"))
 			let availablehackthreads = Math.floor(freeramgb / ns.getScriptRam("/scripts/lib/hack.js"))
 
