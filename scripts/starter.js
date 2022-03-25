@@ -112,6 +112,10 @@ export async function main(ns) {
 	await ns.installBackdoor()
 	ns.toast("Hacked avmnite-02h", "success", 6000)
 
+	// stop growing Hacknet
+	ns.kill("/scripts/growhacknet.js", "home")
+	ns.toast("Finished growing Hacknet", "success", 6000)
+
 	// hack I.I.I.I (The Black Hand faction)
 	while (!ns.hasRootAccess("I.I.I.I") || ns.getServerRequiredHackingLevel("I.I.I.I") > ns.getHackingLevel()) {
 		await ns.sleep(5000)
@@ -123,10 +127,6 @@ export async function main(ns) {
 	await connect.singularityConnect(ns, "I.I.I.I")
 	await ns.installBackdoor()
 	ns.toast("Hacked I.I.I.I", "success", 6000)
-
-	// stop growing Hacknet
-	ns.kill("/scripts/growhacknet.js", "home")
-	ns.toast("Finished growing Hacknet", "success", 6000)
 	
 	// hack run4theh111z (BitRunners faction)
 	while (!ns.hasRootAccess("run4theh111z") || ns.getServerRequiredHackingLevel("run4theh111z") > ns.getHackingLevel()) {

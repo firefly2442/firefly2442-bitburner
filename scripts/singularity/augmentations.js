@@ -5,6 +5,14 @@ export async function main(ns) {
         for (let faction of ["CyberSec", "Netburners", "Sector-12", "NiteSec", "The Black Hand", 
                             "BitRunners", "Daedalus", "Illuminati", "MegaCorp"]) {
             for (let aug of ns.getAugmentationsFromFaction(faction)) {
+                //ns.tprint(faction+" - "+aug+" - "+ns.getAugmentationPrice(aug)+","+ns.getAugmentationRepReq(aug))
+
+                // this one has "levels" and can be upgraded forever, we have to special case it
+                // otherwise it gets removed from the ownedaugs.includes check
+                if (aug == "NeuroFlux Governor") {
+                    ns.purchaseAugmentation(faction, aug)
+                }
+
                 if (ns.getAugmentationPrice(aug) < ns.getServerMoneyAvailable("home") &&
                     ns.getAugmentationRepReq(aug) < ns.getFactionRep(faction) &&
                     !ns.getOwnedAugmentations(true).includes(aug)) {
@@ -19,9 +27,11 @@ export async function main(ns) {
         await ns.upgradeHomeCores()
 
         // if we have enough augs, install them and restart
-        if ((ns.getOwnedAugmentations(true).length - ns.getOwnedAugmentations(false).length) >= 5) {
-            // dump all money to faction for rep
-            ns.donateToFaction("MegaCorp", ns.getServerMoneyAvailable("home"))
+        if ((ns.getOwnedAugmentations(true).length - ns.getOwnedAugmentations(false).length) >= 6) {
+            // dump all money to factions for rep
+            ns.donateToFaction("MegaCorp", Math.floor(ns.getServerMoneyAvailable("home")/3))
+            ns.donateToFaction("CyberSec", Math.floor(ns.getServerMoneyAvailable("home")/2))
+            ns.donateToFaction("Sector-12", ns.getServerMoneyAvailable("home"))
             // no arguments, one thread requirement
             ns.installAugmentations("/scripts/starter.js")
         }

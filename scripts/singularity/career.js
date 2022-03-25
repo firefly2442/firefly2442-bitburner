@@ -14,7 +14,7 @@ export async function main(ns) {
 	}
     ns.stopAction()
 
-    ns.toast("MegaCorp Software Job", "success", 6000)
+    ns.toast("Working job and gaining rep", "success", 6000)
     while (true) {
         // join all available factions
         for (let f of ns.checkFactionInvitations()) {
@@ -26,5 +26,17 @@ export async function main(ns) {
         ns.workForCompany("MegaCorp", false)
         await ns.sleep(60000)
         ns.stopAction()
+
+        // gain rep with various factions
+        let f = ["CyberSec", "Sector-12", "NiteSec", "MegaCorp", "The Black Hand",
+                "Netburners", "BitRunners", "Daedalus", "Illuminati"]
+
+        for (let faction of f) {
+            if (ns.workForFaction(faction, "Hacking Contracts", false)) {
+                await ns.share()
+                await ns.sleep(60000)
+            }
+            ns.stopAction()
+        }
     }
 }
