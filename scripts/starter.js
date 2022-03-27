@@ -84,10 +84,6 @@ export async function main(ns) {
 		await ns.sleep(1000)
 	}
 
-	// start to grow Hacknet
-	ns.exec("/scripts/growhacknet.js", "home", 1)
-	ns.toast("Growing Hacknet", "success", 6000)
-
 	// hack CSEC (CyberSec faction)
 	while (!ns.hasRootAccess("CSEC") || ns.getServerRequiredHackingLevel("CSEC") > ns.getHackingLevel()) {
 		await ns.sleep(5000)
@@ -111,10 +107,6 @@ export async function main(ns) {
 	await connect.singularityConnect(ns, "avmnite-02h")
 	await ns.installBackdoor()
 	ns.toast("Hacked avmnite-02h", "success", 6000)
-
-	// stop growing Hacknet
-	ns.kill("/scripts/growhacknet.js", "home")
-	ns.toast("Finished growing Hacknet", "success", 6000)
 
 	// hack I.I.I.I (The Black Hand faction)
 	while (!ns.hasRootAccess("I.I.I.I") || ns.getServerRequiredHackingLevel("I.I.I.I") > ns.getHackingLevel()) {
