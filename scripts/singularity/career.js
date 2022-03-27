@@ -28,13 +28,22 @@ export async function main(ns) {
         ns.stopAction()
 
         // gain rep with various factions
-        let f = ["CyberSec", "Sector-12", "NiteSec", "MegaCorp", "The Black Hand",
+        let f = ["CyberSec", "Sector-12", "NiteSec", "The Black Hand", "MegaCorp",
                 "Netburners", "BitRunners", "Daedalus", "Illuminati"]
 
         for (let faction of f) {
-            if (ns.workForFaction(faction, "Hacking Contracts", false)) {
-                await ns.share()
-                await ns.sleep(60000)
+            // only gain rep in situations where we have augs to purchase from that faction
+            let purchasableaugs = ns.getAugmentationsFromFaction(faction).length
+            for (let aug of ns.getAugmentationsFromFaction(faction)) {
+                if (ns.getOwnedAugmentations(true).includes(aug)) {
+                    purchasableaugs = purchasableaugs - 1
+                }
+            }
+            if (purchasableaugs != 0) {
+                if (ns.workForFaction(faction, "Hacking Contracts", false)) {
+                    await ns.share() // share home computer
+                    await ns.sleep(60000)
+                }
             }
             ns.stopAction()
         }

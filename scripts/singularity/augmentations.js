@@ -1,9 +1,11 @@
 /** @param {NS} ns **/
 export async function main(ns) {
 
+    let factions = ["CyberSec", "Netburners", "Sector-12", "NiteSec", "The Black Hand", 
+                "BitRunners", "Daedalus", "Illuminati", "MegaCorp"]
+
     while (true) {
-        for (let faction of ["CyberSec", "Netburners", "Sector-12", "NiteSec", "The Black Hand", 
-                            "BitRunners", "Daedalus", "Illuminati", "MegaCorp"]) {
+        for (let faction of factions) {
             for (let aug of ns.getAugmentationsFromFaction(faction)) {
                 //ns.tprint(faction+" - "+aug+" - "+ns.getAugmentationPrice(aug)+","+ns.getAugmentationRepReq(aug))
 
@@ -29,10 +31,27 @@ export async function main(ns) {
         // if we have enough augs, install them and restart
         if ((ns.getOwnedAugmentations(true).length - ns.getOwnedAugmentations(false).length) >= 6) {
             // dump all money to factions for rep
-            ns.donateToFaction("MegaCorp", Math.floor(ns.getServerMoneyAvailable("home")/3))
-            ns.donateToFaction("CyberSec", Math.floor(ns.getServerMoneyAvailable("home")/2))
-            ns.donateToFaction("Sector-12", ns.getServerMoneyAvailable("home"))
+            let candonateto = []
+            for (let faction of factions) {
+                if (ns.donateToFaction(faction, 1)) {
+                    // only donate in situations where we have augs to purchase from that faction
+                    let purchasableaugs = ns.getAugmentationsFromFaction(faction).length
+                    for (let aug of ns.getAugmentationsFromFaction(faction)) {
+                        if (ns.getOwnedAugmentations(true).includes(aug)) {
+                            purchasableaugs = purchasableaugs - 1
+                        }
+                    }
+                    if (purchasableaugs != 0) {
+                        candonateto.push(faction)
+                    }
+                }
+            }
+            for (let i = candonateto.length; i > 0; i--) {
+                ns.toast("Donated to faction: " + candonateto[i-1], "success", 10000)
+                ns.donateToFaction(candonateto[i-1], Math.floor(ns.getServerMoneyAvailable("home")/i))
+            }
             // no arguments, one thread requirement
+            //ns.toast("Ready to install augs and reset", "success", 10000)
             ns.installAugmentations("/scripts/starter.js")
         }
 
