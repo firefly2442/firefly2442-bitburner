@@ -15,6 +15,9 @@ export async function main(ns) {
                     ns.purchaseAugmentation(faction, aug)
                 }
 
+                // TODO: consider installing augs in reverse order so the most expensive augs
+                // are first, this would save money and likely increase speed
+
                 if (ns.getAugmentationPrice(aug) < ns.getServerMoneyAvailable("home") &&
                     ns.getAugmentationRepReq(aug) < ns.getFactionRep(faction) &&
                     !ns.getOwnedAugmentations(true).includes(aug)) {
@@ -50,6 +53,8 @@ export async function main(ns) {
                 ns.toast("Donated to faction: " + candonateto[i-1], "success", 10000)
                 ns.donateToFaction(candonateto[i-1], Math.floor(ns.getServerMoneyAvailable("home")/i))
             }
+            // TODO: sell all stocks as they're lost on reset
+
             // no arguments, one thread requirement
             //ns.toast("Ready to install augs and reset", "success", 10000)
             ns.installAugmentations("/scripts/starter.js")
