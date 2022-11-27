@@ -2,13 +2,15 @@
 
 Code and scripts for the game [Bitburner](https://store.steampowered.com/app/1812820/Bitburner/)
 
-## Autocomplete
+## Autocomplete and Extension
 
-`/.vscode/settings.json`
+`~/.config/Code/User/settings.json`
 
 ```file
-"bitburner.scriptRoot": "./",
-"javascript.preferences.importModuleSpecifier": "non-relative"
+"bitburner.scriptRoot": "/home/carlsonp/src/firefly2442-bitburner/",
+"javascript.preferences.importModuleSpecifier": "non-relative",
+"bitburner.authToken": "secret",
+"bitburner.showPushSuccessNotification": true
 ```
 
 ## References
