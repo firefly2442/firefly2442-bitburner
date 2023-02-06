@@ -42,6 +42,6 @@ export async function singularityConnect(ns, target) {
 	path.reverse()
 	
     for (let c of path) {
-        await ns.connect(c)
+        await ns.singularity.connect(c)
     }
   }

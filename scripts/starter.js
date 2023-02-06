@@ -3,7 +3,7 @@ import * as connect from '/scripts/lib/connect.js';
 
 export async function main(ns) {
 
-	ns.universityCourse("rothman university", "Study Computer Science", false)
+	ns.singularity.universityCourse("rothman university", "Study Computer Science", false)
 
 	// start getting money and experience
 	ns.exec("/scripts/hacktheplanet.js", "home", 1)
@@ -14,7 +14,7 @@ export async function main(ns) {
 		await ns.sleep(5000)
 	}
 	// code starter program to bootstrap ability to make some decent money
-	ns.createProgram("BruteSSH.exe", false)
+	ns.singularity.createProgram("BruteSSH.exe", false)
 
 	for (let p of ns.ps("home")) {
 		if (["/scripts/hackit.js", "/scripts/lib/grow.js", "/scripts/lib/hack.js", "/scripts/lib/weaken.js"].includes(p.filename)) {
@@ -34,7 +34,7 @@ export async function main(ns) {
 	while (ns.getServerMoneyAvailable("home") < 200000) {
 		await ns.sleep(5000)
 	}
-	await ns.purchaseTor()
+	await ns.singularity.purchaseTor()
 	ns.toast("Tor node purchased", "success", 6000)
 
 	// purchase items from the dark web, requires Singularity API
@@ -56,7 +56,7 @@ export async function main(ns) {
 		moretoinstall = false
 		for (let toinstall of topurchase) {
 			if (!ns.ls("home").includes(toinstall)) {
-				if (ns.purchaseProgram(toinstall)) {
+				if (ns.singularity.purchaseProgram(toinstall)) {
 					// relaunch to make use of new program
 					for (let p of ns.ps("home")) {
 						if (["/scripts/hackit.js", "/scripts/lib/grow.js", "/scripts/lib/hack.js", "/scripts/lib/weaken.js"].includes(p.filename)) {
@@ -93,7 +93,7 @@ export async function main(ns) {
 	}
 	
 	await connect.singularityConnect(ns, "CSEC")
-	await ns.installBackdoor()
+	await ns.singularity.installBackdoor()
 	ns.toast("Hacked CSEC", "success", 6000)
 
 	// hack avmnite-02h (NiteSec faction)
@@ -105,7 +105,7 @@ export async function main(ns) {
 	}
 	
 	await connect.singularityConnect(ns, "avmnite-02h")
-	await ns.installBackdoor()
+	await ns.singularity.installBackdoor()
 	ns.toast("Hacked avmnite-02h", "success", 6000)
 
 	// hack I.I.I.I (The Black Hand faction)
@@ -117,7 +117,7 @@ export async function main(ns) {
 	}
 	
 	await connect.singularityConnect(ns, "I.I.I.I")
-	await ns.installBackdoor()
+	await ns.singularity.installBackdoor()
 	ns.toast("Hacked I.I.I.I", "success", 6000)
 	
 	// hack run4theh111z (BitRunners faction)
@@ -129,7 +129,7 @@ export async function main(ns) {
 	}
 	
 	await connect.singularityConnect(ns, "run4theh111z")
-	await ns.installBackdoor()
+	await ns.singularity.installBackdoor()
 	ns.toast("Hacked run4theh111z", "success", 6000)
 
 	// hack The-Cave
@@ -141,7 +141,7 @@ export async function main(ns) {
 	}
 	
 	await connect.singularityConnect(ns, "The-Cave")
-	await ns.installBackdoor()
+	await ns.singularity.installBackdoor()
 	ns.toast("Hacked The-Cave", "success", 6000)
 
 
