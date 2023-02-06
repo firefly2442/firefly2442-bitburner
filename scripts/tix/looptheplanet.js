@@ -1,3 +1,5 @@
+import * as store from '/scripts/lib/store.js';
+
 /** @param {NS} ns **/
 export async function main(ns) {
 	if (ns.getHostname() == "home") {
@@ -38,14 +40,15 @@ export async function main(ns) {
 					await ns.nuke(server)
 				}
 			}
-			if (ns.hasRootAccess(server) && server != "home") {
+			if (ns.getServerRequiredHackingLevel(server) <= ns.getHackingLevel() && ns.hasRootAccess(server) && server != "home") {
                 let freeramgb = ns.getServerMaxRam(server) - ns.getServerUsedRam(server)
-                let availablegrowweakenthreads = Math.floor(freeramgb / ns.getScriptRam("/scripts/tix/growforever.js", server))
+                let availablegrowweakenthreads = Math.floor(freeramgb / ns.getScriptRam("/scripts/tix/growhackforever.js", server))
 
                 if (availablegrowweakenthreads == 0) {availablegrowweakenthreads++}
                 
-                await ns.scp("/scripts/tix/growforever.js", server)
-                await ns.exec("/scripts/tix/growforever.js", server, availablegrowweakenthreads, "--target", server)
+                await ns.scp("/scripts/tix/growhackforever.js", server)
+				await ns.scp("/scripts/lib/store.js", server)
+                await ns.exec("/scripts/tix/growhackforever.js", server, availablegrowweakenthreads, "--target", store.getItem('market-hack-grow-target'))
 			}
 		}
 	}
