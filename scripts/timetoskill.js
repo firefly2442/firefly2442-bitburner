@@ -12,19 +12,19 @@ export async function main(ns) {
     let after = 0
 
     if (data['type'] == "hack") {
-	    before = player.hacking_exp
-        ns.tprint("Player hacking multiplier: " + player.hacking_mult)
+	    before = player.exp.hacking
+        ns.tprint("Player hacking speed multiplier: " + player.mults.hacking)
     }
 	await ns.sleep(60000)
 
     player = await ns.getPlayer()
     if (data['type'] == "hack") {
-	    after = player.hacking_exp
+	    after = player.exp.hacking
     }
     
 
     let delta = (after - before)
-    let target = ns.formulas.skills.calculateExp(data['target'], player.hacking_mult)
+    let target = ns.formulas.skills.calculateExp(data['target'], player.mults.hacking)
     ns.tprint("Running at approximately " + delta + " / minute for " + data['type'])
 	let timeminutes = (target-after) / (after - before)
 	ns.tprint("It will take " + timeminutes + " minutes to meet the target for " + data['type'])
