@@ -6,8 +6,10 @@ export async function main(ns) {
 			ns.hacknet.upgradeRam(n, 1)
 			ns.hacknet.upgradeLevel(n, 1)
 			ns.hacknet.upgradeCore(n, 1)
+			ns.hacknet.upgradeCache(n, 1)
 		}
 		await ns.hacknet.purchaseNode()
+		await ns.hacknet.spendHashes("Sell for Money")
 
 		await ns.sleep(1000);
 	}
