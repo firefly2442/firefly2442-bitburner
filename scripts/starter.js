@@ -147,6 +147,8 @@ export async function main(ns) {
 
 	// enter The-Cave and then perform a scan
 	// enter the only available entry and continue...
+	// run fl1ght.exe for requirements
+	// install the red pill augmentation from Daedalus
 
 	ns.tprint("Finished with starter")
 }
