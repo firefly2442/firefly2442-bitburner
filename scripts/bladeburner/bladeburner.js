@@ -1,6 +1,15 @@
 /** @param {NS} ns **/
 export async function main(ns) {
 
+    // joing the bladeburner requires 100 level stats in strength, defense, dexterity, and agility
+    // the gym is an easy way to train this up if you have money
+    // then in City Sector-12 (the starting city), go to the NSA and then join them
+
+    // $ run bladeburner.js --recruit false
+	const data = ns.flags([
+		['recruit', 'false']
+  	])
+
     while (true) {
         // stop any actions that are running
         ns.bladeburner.stopBladeburnerAction()
@@ -66,10 +75,12 @@ export async function main(ns) {
         await ns.sleep(t+100)
         ns.bladeburner.stopBladeburnerAction()
 
-        // recruit if we have nothing else to do
-        // t = ns.bladeburner.getActionTime("general", "Recruitment")
-        // ns.bladeburner.startAction("general", "Recruitment")
-        // await ns.sleep(t+100)
-        // ns.bladeburner.stopBladeburnerAction()
+        if (data['recruit'] == "true") {
+            // recruit a team
+            t = ns.bladeburner.getActionTime("general", "Recruitment")
+            ns.bladeburner.startAction("general", "Recruitment")
+            await ns.sleep(t+100)
+            ns.bladeburner.stopBladeburnerAction()
+        }
     }
 }
