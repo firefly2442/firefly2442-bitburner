@@ -1,13 +1,23 @@
 /** @param {NS} ns **/
 export async function main(ns) {
+	// $ run hacktheplanet.js --skiphacknet true
+	const data = ns.flags([
+		['skiphacknet', 'true']
+  	])
+
+
 	if (ns.getHostname() == "home") {
 		let servers = ["home"]
 		let serversToScan = ns.scan("home")
 		while (serversToScan.length > 0) {
 			let server = serversToScan.shift()
 			if (!servers.includes(server)) {
-				servers.push(server)
-				serversToScan = serversToScan.concat(ns.scan(server))
+				if (server.startsWith("hacknet") && data['skiphacknet'] == "true") {
+					// skip hacknet servers
+				} else {
+					servers.push(server)
+					serversToScan = serversToScan.concat(ns.scan(server))
+				}
 			}
 		}
 		ns.tprint("Servers: " + servers)
