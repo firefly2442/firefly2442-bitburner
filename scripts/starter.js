@@ -147,8 +147,9 @@ export async function main(ns) {
 
 	// enter The-Cave and then perform a scan
 	// enter the only available entry and continue...
-	// run fl1ght.exe for requirements
+	// run fl1ght.exe for requirements, requires 2500 level hacking and $100 billion dollars
 	// install the red pill augmentation from Daedalus
+	// connect to w0r1d_d43m0n and hack it, this finishes the level, requires 3000 hacking level
 
 	ns.tprint("Finished with starter")
 }
