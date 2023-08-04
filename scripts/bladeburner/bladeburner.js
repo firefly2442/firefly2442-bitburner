@@ -4,6 +4,7 @@ export async function main(ns) {
     // joing the bladeburner requires 100 level stats in strength, defense, dexterity, and agility
     // the gym is an easy way to train this up if you have money
     // then in City Sector-12 (the starting city), go to the NSA and then join them
+    // finishing all the bladeburner black ops can finish the node and provides an alternative
 
     // $ run bladeburner.js --recruit false
 	const data = ns.flags([
@@ -69,11 +70,13 @@ export async function main(ns) {
             ns.bladeburner.stopBladeburnerAction()
         }
 
-        // train if we have nothing else to do
-        t = ns.bladeburner.getActionTime("general", "Training")
-        ns.bladeburner.startAction("general", "Training")
-        await ns.sleep(t+100)
-        ns.bladeburner.stopBladeburnerAction()
+        if (ns.getPlayer().skills.strength < 1000 || ns.getPlayer().skills.defense < 1000 || ns.getPlayer().skills.dexterity < 1000 || ns.getPlayer().skills.agility < 1000) {
+            // train if we don't meet the requirements
+            t = ns.bladeburner.getActionTime("general", "Training")
+            ns.bladeburner.startAction("general", "Training")
+            await ns.sleep(t+100)
+            ns.bladeburner.stopBladeburnerAction()
+        }
 
         if (data['recruit'] == "true") {
             // recruit a team
@@ -81,6 +84,19 @@ export async function main(ns) {
             ns.bladeburner.startAction("general", "Recruitment")
             await ns.sleep(t+100)
             ns.bladeburner.stopBladeburnerAction()
+        }
+
+        // look to Blackops missions
+        for (let blackopsname of ns.bladeburner.getBlackOpNames()) {
+            const [low_blackops, high_blackops] = ns.bladeburner.getActionEstimatedSuccessChance("blackops", blackopsname)
+            if (low_blackops == high_blackops && high_blackops >= 0.95 && ns.bladeburner.getRank() > ns.bladeburner.getBlackOpRank(blackopsname)) {
+                let t = ns.bladeburner.getActionTime("blackops", blackopsname)
+                let started = ns.bladeburner.startAction("blackops", blackopsname)
+                if (started) {
+                    await ns.sleep(t+100)
+                }
+                ns.bladeburner.stopBladeburnerAction()
+            }
         }
     }
 }
