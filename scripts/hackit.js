@@ -13,7 +13,7 @@ export async function main(ns) {
 		const ps = ns.ps(ns.getHostname())
 		let running = false
 		for (let script of ps) {
-			if (script.filename == "/scripts/lib/hack.js" || script.filename == "/scripts/lib/weaken.js" || script.filename == "/scripts/lib/grow.js") {
+			if (script.filename == "scripts/lib/hack.js" || script.filename == "scripts/lib/weaken.js" || script.filename == "scripts/lib/grow.js") {
 				running = true
 			}
 		}

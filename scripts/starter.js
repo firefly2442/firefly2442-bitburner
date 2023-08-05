@@ -17,7 +17,7 @@ export async function main(ns) {
 	ns.singularity.createProgram("BruteSSH.exe", false)
 
 	for (let p of ns.ps("home")) {
-		if (["/scripts/hackit.js", "/scripts/lib/grow.js", "/scripts/lib/hack.js", "/scripts/lib/weaken.js"].includes(p.filename)) {
+		if (["scripts/hackit.js", "scripts/lib/grow.js", "scripts/lib/hack.js", "scripts/lib/weaken.js"].includes(p.filename)) {
 			ns.kill(p.pid, "home")
 		}
 	}
@@ -59,7 +59,7 @@ export async function main(ns) {
 				if (ns.singularity.purchaseProgram(toinstall)) {
 					// relaunch to make use of new program
 					for (let p of ns.ps("home")) {
-						if (["/scripts/hackit.js", "/scripts/lib/grow.js", "/scripts/lib/hack.js", "/scripts/lib/weaken.js"].includes(p.filename)) {
+						if (["scripts/hackit.js", "scripts/lib/grow.js", "scripts/lib/hack.js", "scripts/lib/weaken.js"].includes(p.filename)) {
 							ns.kill(p.pid, "home")
 						}
 					}
@@ -76,7 +76,7 @@ export async function main(ns) {
 
 	// relaunch to make use of new programs
 	for (let p of ns.ps("home")) {
-		if (["/scripts/hackit.js", "/scripts/lib/grow.js", "/scripts/lib/hack.js", "/scripts/lib/weaken.js"].includes(p.filename)) {
+		if (["scripts/hackit.js", "scripts/lib/grow.js", "scripts/lib/hack.js", "scripts/lib/weaken.js"].includes(p.filename)) {
 			ns.kill(p.pid, "home")
 		}
 	}
