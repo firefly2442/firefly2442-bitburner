@@ -45,7 +45,7 @@ export async function main(ns) {
         ns.bladeburner.stopBladeburnerAction()
 
         // look to contract bounty hunt if we have good enough intel and good chances
-        const [low_per_bounty, high_per_bounty] = ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")
+        var [low_per_bounty, high_per_bounty] = ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")
         if (low_per_bounty == high_per_bounty && high_per_bounty >= 0.95) {
             let t = ns.bladeburner.getActionTime("contract", "Bounty Hunter")
             ns.bladeburner.startAction("contracts", "Bounty Hunter")
@@ -54,7 +54,7 @@ export async function main(ns) {
         }
 
         // look to contract retire if we have good enough intel and good chances
-        const [low_per_retire, high_per_retire] = ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Retirement")
+        var [low_per_retire, high_per_retire] = ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Retirement")
         if (low_per_retire == high_per_retire && high_per_retire >= 0.95) {
             let t = ns.bladeburner.getActionTime("contracts", "Retirement")
             ns.bladeburner.startAction("contracts", "Retirement")
@@ -63,11 +63,12 @@ export async function main(ns) {
         }
 
         // gather more intel to narrow the percentages range
-        if (low_per_bounty != high_per_bounty || low_per_retire != high_per_retire) {
+        while (low_per_bounty != high_per_bounty || low_per_retire != high_per_retire) {
             let t = ns.bladeburner.getActionTime("general", "Field Analysis")
             ns.bladeburner.startAction("general", "Field Analysis")
             await ns.sleep(t+100)
             ns.bladeburner.stopBladeburnerAction()
+            var [low_per_bounty, high_per_bounty] = ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")
         }
 
         if (ns.getPlayer().skills.strength < 1000 || ns.getPlayer().skills.defense < 1000 || ns.getPlayer().skills.dexterity < 1000 || ns.getPlayer().skills.agility < 1000) {
@@ -88,7 +89,16 @@ export async function main(ns) {
 
         // look to Blackops missions
         for (let blackopsname of ns.bladeburner.getBlackOpNames()) {
-            const [low_blackops, high_blackops] = ns.bladeburner.getActionEstimatedSuccessChance("blackops", blackopsname)
+            var [low_blackops, high_blackops] = ns.bladeburner.getActionEstimatedSuccessChance("blackops", blackopsname)
+            while (low_blackops != high_blackops) {
+                // gather intel on blackops mission
+                let t = ns.bladeburner.getActionTime("general", "Field Analysis")
+                ns.bladeburner.startAction("general", "Field Analysis")
+                await ns.sleep(t+100)
+                ns.bladeburner.stopBladeburnerAction()
+                var [low_blackops, high_blackops] = ns.bladeburner.getActionEstimatedSuccessChance("blackops", blackopsname)
+            }
+
             if (low_blackops == high_blackops && high_blackops >= 0.95 && ns.bladeburner.getRank() > ns.bladeburner.getBlackOpRank(blackopsname)) {
                 let t = ns.bladeburner.getActionTime("blackops", blackopsname)
                 let started = ns.bladeburner.startAction("blackops", blackopsname)
