@@ -6,41 +6,41 @@ export async function main(ns) {
 
     while (true) {
         for (let faction of factions) {
-            for (let aug of ns.getAugmentationsFromFaction(faction)) {
+            for (let aug of ns.singularity.getAugmentationsFromFaction(faction)) {
                 //ns.tprint(faction+" - "+aug+" - "+ns.getAugmentationPrice(aug)+","+ns.getAugmentationRepReq(aug))
 
                 // this one has "levels" and can be upgraded forever, we have to special case it
                 // otherwise it gets removed from the ownedaugs.includes check
                 if (aug == "NeuroFlux Governor") {
-                    ns.purchaseAugmentation(faction, aug)
+                    ns.singularity.purchaseAugmentation(faction, aug)
                 }
 
                 // TODO: consider installing augs in reverse order so the most expensive augs
                 // are first, this would save money and likely increase speed
 
-                if (ns.getAugmentationPrice(aug) < ns.getServerMoneyAvailable("home") &&
-                    ns.getAugmentationRepReq(aug) < ns.getFactionRep(faction) &&
-                    !ns.getOwnedAugmentations(true).includes(aug)) {
-                    ns.purchaseAugmentation(faction, aug)
+                if (ns.singularity.getAugmentationPrice(aug) < ns.getServerMoneyAvailable("home") &&
+                    ns.singularity.getAugmentationRepReq(aug) < ns.singularity.getFactionRep(faction) &&
+                    !ns.singularity.getOwnedAugmentations(true).includes(aug)) {
+                    ns.singularity.purchaseAugmentation(faction, aug)
                     ns.toast("Purchased aug: " + aug, "success", 6000)
                 }
             }
         }
 
         // look to upgrade RAM and Cores while we're at it
-		await ns.upgradeHomeRam()
-        await ns.upgradeHomeCores()
+		await ns.singularity.upgradeHomeRam()
+        await ns.singularity.upgradeHomeCores()
 
         // if we have enough augs, install them and restart
-        if ((ns.getOwnedAugmentations(true).length - ns.getOwnedAugmentations(false).length) >= 6) {
+        if ((ns.singularity.getOwnedAugmentations(true).length - ns.singularity.getOwnedAugmentations(false).length) >= 6) {
             // dump all money to factions for rep
             let candonateto = []
             for (let faction of factions) {
-                if (ns.donateToFaction(faction, 1)) {
+                if (ns.singularity.donateToFaction(faction, 1)) {
                     // only donate in situations where we have augs to purchase from that faction
-                    let purchasableaugs = ns.getAugmentationsFromFaction(faction).length
-                    for (let aug of ns.getAugmentationsFromFaction(faction)) {
-                        if (ns.getOwnedAugmentations(true).includes(aug)) {
+                    let purchasableaugs = ns.singularity.getAugmentationsFromFaction(faction).length
+                    for (let aug of ns.singularity.getAugmentationsFromFaction(faction)) {
+                        if (ns.singularity.getOwnedAugmentations(true).includes(aug)) {
                             purchasableaugs = purchasableaugs - 1
                         }
                     }
@@ -57,7 +57,7 @@ export async function main(ns) {
 
             // no arguments, one thread requirement
             //ns.toast("Ready to install augs and reset", "success", 10000)
-            ns.installAugmentations("/scripts/starter.js")
+            ns.singularity.installAugmentations("/scripts/starter.js")
         }
 
         await ns.sleep(60000)

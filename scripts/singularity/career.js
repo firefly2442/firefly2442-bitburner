@@ -2,13 +2,13 @@
 export async function main(ns) {
 
     // be a poor graduate student
-    ns.universityCourse("rothman university", "Study Computer Science", false)
+    ns.singularity.universityCourse("rothman university", "Study Computer Science", false)
     while (ns.getHackingLevel() < 150) {
 		await ns.sleep(5000)
 	}
     ns.stopAction()
     // take a class that costs money
-    ns.universityCourse("rothman university", "Algorithms", false)
+    ns.singularity.universityCourse("rothman university", "Algorithms", false)
     while (ns.getHackingLevel() < 250) {
 		await ns.sleep(5000)
 	}
@@ -22,8 +22,8 @@ export async function main(ns) {
         }
 
         // apply and look for promotions
-        ns.applyToCompany("MegaCorp", "Software")
-        ns.workForCompany("MegaCorp", false)
+        ns.singularity.applyToCompany("MegaCorp", "Software")
+        ns.singularity.workForCompany("MegaCorp", false)
         await ns.sleep(60000)
         ns.stopAction()
 
@@ -33,14 +33,14 @@ export async function main(ns) {
 
         for (let faction of f) {
             // only gain rep in situations where we have augs to purchase from that faction
-            let purchasableaugs = ns.getAugmentationsFromFaction(faction).length
-            for (let aug of ns.getAugmentationsFromFaction(faction)) {
-                if (ns.getOwnedAugmentations(true).includes(aug)) {
+            let purchasableaugs = ns.singularity.getAugmentationsFromFaction(faction).length
+            for (let aug of ns.singularity.getAugmentationsFromFaction(faction)) {
+                if (ns.singularity.getOwnedAugmentations(true).includes(aug)) {
                     purchasableaugs = purchasableaugs - 1
                 }
             }
             if (purchasableaugs != 0) {
-                if (ns.workForFaction(faction, "Hacking Contracts", false)) {
+                if (ns.singularity.workForFaction(faction, "Hacking Contracts", false)) {
                     await ns.share() // share home computer
                     await ns.sleep(60000)
                 }
