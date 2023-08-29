@@ -4,6 +4,7 @@ import * as connect from '/scripts/lib/connect.js';
 export async function main(ns) {
 
 	ns.singularity.universityCourse("rothman university", "Study Computer Science", false)
+	await ns.sleep(30000) //get some skills right off the bat
 
 	// start getting money and experience
 	ns.exec("/scripts/hacktheplanet.js", "home", 1)

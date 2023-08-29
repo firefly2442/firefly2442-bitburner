@@ -6,26 +6,26 @@ export async function main(ns) {
     while (ns.getHackingLevel() < 150) {
 		await ns.sleep(5000)
 	}
-    ns.stopAction()
+    ns.singularity.stopAction()
     // take a class that costs money
     ns.singularity.universityCourse("rothman university", "Algorithms", false)
     while (ns.getHackingLevel() < 250) {
 		await ns.sleep(5000)
 	}
-    ns.stopAction()
+    ns.singularity.stopAction()
 
     ns.toast("Working job and gaining rep", "success", 6000)
     while (true) {
         // join all available factions
-        for (let f of ns.checkFactionInvitations()) {
-            ns.joinFaction(f)
+        for (let f of ns.singularity.checkFactionInvitations()) {
+            ns.singularity.joinFaction(f)
         }
 
         // apply and look for promotions
         ns.singularity.applyToCompany("MegaCorp", "Software")
         ns.singularity.workForCompany("MegaCorp", false)
         await ns.sleep(60000)
-        ns.stopAction()
+        ns.singularity.stopAction()
 
         // gain rep with various factions
         let f = ["CyberSec", "Sector-12", "NiteSec", "The Black Hand", "MegaCorp",
@@ -45,7 +45,7 @@ export async function main(ns) {
                     await ns.sleep(60000)
                 }
             }
-            ns.stopAction()
+            ns.singularity.stopAction()
         }
     }
 }
