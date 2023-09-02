@@ -51,7 +51,7 @@ export async function main(ns) {
             }
             for (let i = candonateto.length; i > 0; i--) {
                 ns.toast("Donated to faction: " + candonateto[i-1], "success", 10000)
-                ns.donateToFaction(candonateto[i-1], Math.floor(ns.getServerMoneyAvailable("home")/i))
+                ns.singularity.donateToFaction(candonateto[i-1], Math.floor(ns.getServerMoneyAvailable("home")/i))
             }
             // TODO: sell all stocks as they're lost on reset
 
