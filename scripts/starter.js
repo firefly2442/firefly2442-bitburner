@@ -25,6 +25,12 @@ export async function main(ns) {
 	// start our career and augmentations checks
 	ns.exec("/scripts/singularity/career.js", "home", 1)
 	ns.exec("/scripts/singularity/augmentations.js", "home", 1)
+	try {
+		ns.tprint(ns.sleeve.getNumSleeves());
+		ns.exec("/scripts/singularity/sleeves.js", "home", 1);
+	  } catch {
+		ns.tprint('You do not have access to the sleeve API');
+	}
 
 	while (ns.exec("/scripts/hacktheplanet.js", "home", 1) == 0) {
 		await ns.sleep(1000)
