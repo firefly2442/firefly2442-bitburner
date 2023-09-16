@@ -26,7 +26,7 @@ export async function main(ns) {
 	ns.exec("/scripts/singularity/career.js", "home", 1)
 	ns.exec("/scripts/singularity/augmentations.js", "home", 1)
 	try {
-		ns.tprint(ns.sleeve.getNumSleeves());
+		ns.tprint("Number of sleeves: "+ns.sleeve.getNumSleeves());
 		ns.exec("/scripts/singularity/sleeves.js", "home", 1);
 	  } catch {
 		ns.tprint('You do not have access to the sleeve API');

@@ -4,12 +4,20 @@ export async function main(ns) {
     // be a poor graduate student
     ns.singularity.universityCourse("rothman university", "Study Computer Science", false)
     while (ns.getHackingLevel() < 150) {
+        // join all available factions
+        for (let f of ns.singularity.checkFactionInvitations()) {
+            ns.singularity.joinFaction(f)
+        }
 		await ns.sleep(5000)
 	}
     ns.singularity.stopAction()
     // take a class that costs money
     ns.singularity.universityCourse("rothman university", "Algorithms", false)
     while (ns.getHackingLevel() < 250) {
+        // join all available factions
+        for (let f of ns.singularity.checkFactionInvitations()) {
+            ns.singularity.joinFaction(f)
+        }
 		await ns.sleep(5000)
 	}
     ns.singularity.stopAction()
