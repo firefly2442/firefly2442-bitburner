@@ -21,8 +21,9 @@ export async function main(ns) {
                 if (ns.singularity.getAugmentationPrice(aug) < ns.getServerMoneyAvailable("home") &&
                     ns.singularity.getAugmentationRepReq(aug) < ns.singularity.getFactionRep(faction) &&
                     !ns.singularity.getOwnedAugmentations(true).includes(aug)) {
-                    ns.singularity.purchaseAugmentation(faction, aug)
-                    ns.toast("Purchased aug: " + aug, "success", 6000)
+                    if (ns.singularity.purchaseAugmentation(faction, aug)) {
+                        ns.toast("Purchased aug: " + aug, "success", 6000)
+                    }
                 }
             }
         }
