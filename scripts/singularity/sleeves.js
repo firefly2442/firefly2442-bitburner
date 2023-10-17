@@ -23,7 +23,7 @@ export async function main(ns) {
             let r = Math.floor(Math.random() * 3)
             if (r == 0) {
                 // commit crimes
-                ns.sleeve.setToCommitCrime(i, "Larceny")
+                ns.sleeve.setToCommitCrime(i, "Heist")
                 //ns.tprint("Setting sleeve "+i+" to crime.")
             } else if (r == 1) {
                 // work faction
@@ -53,9 +53,10 @@ export async function main(ns) {
 
             // if everything falls through, just do crime
             if (ns.sleeve.getTask(i) === null) {
-                ns.sleeve.setToCommitCrime(i, "Larceny")
+                ns.sleeve.setToCommitCrime(i, "Heist")
             }
         }
-        await ns.sleep(60000)
+        // slightly over 10 minutes which is the amount of time a Heist takes without bonus time
+        await ns.sleep(601000)
     }
 }
