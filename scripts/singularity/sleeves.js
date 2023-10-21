@@ -9,14 +9,16 @@ export async function main(ns) {
         let availablecompanies = ["MegaCorp"]
         //https://github.com/bitburner-official/bitburner-src/blob/dev/markdown/bitburner.sleeve.md
         for (let i = 0; i < ns.sleeve.getNumSleeves(); i++) {
-            //ns.tprint("Preparing sleeve "+i)
-            if (ns.sleeve.getSleeve(i).shock != 0) {
-                ns.sleeve.setToShockRecovery(i)
-                break;
-            }
+            // ns.tprint("Preparing sleeve "+i)
             if (ns.sleeve.getSleeve(i).sync != 100) {
                 ns.sleeve.setToSynchronize(i)
-                break;
+                // ns.tprint("Setting sleeve "+i+" to synchronize")
+                continue;
+            }
+            if (ns.sleeve.getSleeve(i).shock != 0) {
+                ns.sleeve.setToShockRecovery(i)
+                // ns.tprint("Setting sleeve "+i+" to shock recovery")
+                continue;
             }
 
             // come up with a random activity to work on
@@ -24,30 +26,30 @@ export async function main(ns) {
             if (r == 0) {
                 // commit crimes
                 ns.sleeve.setToCommitCrime(i, "Heist")
-                //ns.tprint("Setting sleeve "+i+" to crime.")
+                // ns.tprint("Setting sleeve "+i+" to crime.")
             } else if (r == 1) {
                 // work faction
-                //ns.tprint("Available factions before:")
-                //ns.tprint(availablefactions)
+                // ns.tprint("Available factions before:")
+                // ns.tprint(availablefactions)
                 for (let f = 0; f < availablefactions.length; f++) {
                     ns.sleeve.setToFactionWork(i, availablefactions[f], "hacking")
-                    //ns.tprint("Setting sleeve "+i+" to faction work.")
+                    // ns.tprint("Setting sleeve "+i+" to faction work.")
                     availablefactions.splice(f, 1)
+                    // ns.tprint("After:")
+                    // ns.tprint(availablefactions)
                     break;
-                    //ns.tprint("After:")
-                    //ns.tprint(availablefactions)
                 }
             } else if (r == 2) {
                 // work company
-                //ns.tprint("Available companies before:")
-                //ns.tprint(availablecompanies)
+                // ns.tprint("Available companies before:")
+                // ns.tprint(availablecompanies)
                 for (let f = 0; f < availablecompanies.length; f++) {
                     ns.sleeve.setToCompanyWork(i, availablecompanies[f])
-                    //ns.tprint("Setting sleeve "+i+" to company work.")
+                    // ns.tprint("Setting sleeve "+i+" to company work.")
                     availablecompanies.splice(f, 1)
+                    // ns.tprint("After:")
+                    // ns.tprint(availablecompanies)
                     break;
-                    //ns.tprint("After:")
-                    //ns.tprint(availablecompanies)
                 }
             }
 
