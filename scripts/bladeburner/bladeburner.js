@@ -45,8 +45,7 @@ export async function main(ns) {
         ns.bladeburner.stopBladeburnerAction()
 
         // look to contract bounty hunt if we have good enough intel and good chances
-        var [low_per_bounty, high_per_bounty] = ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")
-        if (low_per_bounty == high_per_bounty && high_per_bounty >= 0.95) {
+        if (ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")[0] == ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")[1] && ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")[1] >= 0.95) {
             let t = ns.bladeburner.getActionTime("contract", "Bounty Hunter")
             ns.bladeburner.startAction("contracts", "Bounty Hunter")
             await ns.sleep(t+100)
@@ -54,8 +53,7 @@ export async function main(ns) {
         }
 
         // look to contract retire if we have good enough intel and good chances
-        var [low_per_retire, high_per_retire] = ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Retirement")
-        if (low_per_retire == high_per_retire && high_per_retire >= 0.95) {
+        if (ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Retirement")[0] == ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Retirement")[1] && ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Retirement")[1] >= 0.95) {
             let t = ns.bladeburner.getActionTime("contracts", "Retirement")
             ns.bladeburner.startAction("contracts", "Retirement")
             await ns.sleep(t+100)
@@ -63,12 +61,11 @@ export async function main(ns) {
         }
 
         // gather more intel to narrow the percentages range
-        while (low_per_bounty != high_per_bounty || low_per_retire != high_per_retire) {
+        while (ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")[0] != ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")[1] || ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Retirement")[0] != ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Retirement")[1]) {
             let t = ns.bladeburner.getActionTime("general", "Field Analysis")
             ns.bladeburner.startAction("general", "Field Analysis")
             await ns.sleep(t+100)
             ns.bladeburner.stopBladeburnerAction()
-            var [low_per_bounty, high_per_bounty] = ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")
         }
 
         if (ns.getPlayer().skills.strength < 1000 || ns.getPlayer().skills.defense < 1000 || ns.getPlayer().skills.dexterity < 1000 || ns.getPlayer().skills.agility < 1000) {
@@ -87,19 +84,29 @@ export async function main(ns) {
             ns.bladeburner.stopBladeburnerAction()
         }
 
+        // iterate through operations missions
+        for (let op of ['Investigation', 'Undercover Operation', 'Sting Operation', 'Raid', 'Stealth Retirement Opeation', 'Assassination']) {
+            while (ns.bladeburner.getActionEstimatedSuccessChance("operations", op)[0] >= 0.99 && ns.bladeburner.getActionEstimatedSuccessChance("operations", op)[1] >= 0.99 && ns.bladeburner.getActionCountRemaining("operations", op) > 0) {
+                let t = ns.bladeburner.getActionTime("operations", op)
+                let started = ns.bladeburner.startAction("operations", op)
+                if (started) {
+                    await ns.sleep(t+100)
+                }
+                ns.bladeburner.stopBladeburnerAction()
+            }
+        }
+
         // look to Blackops missions
         for (let blackopsname of ns.bladeburner.getBlackOpNames()) {
-            var [low_blackops, high_blackops] = ns.bladeburner.getActionEstimatedSuccessChance("blackops", blackopsname)
-            while (low_blackops != high_blackops) {
+            while (ns.bladeburner.getActionEstimatedSuccessChance("blackops", blackopsname)[0] != ns.bladeburner.getActionEstimatedSuccessChance("blackops", blackopsname)[1]) {
                 // gather intel on blackops mission
                 let t = ns.bladeburner.getActionTime("general", "Field Analysis")
                 ns.bladeburner.startAction("general", "Field Analysis")
                 await ns.sleep(t+100)
                 ns.bladeburner.stopBladeburnerAction()
-                var [low_blackops, high_blackops] = ns.bladeburner.getActionEstimatedSuccessChance("blackops", blackopsname)
             }
 
-            if (low_blackops == high_blackops && high_blackops >= 0.95 && ns.bladeburner.getRank() > ns.bladeburner.getBlackOpRank(blackopsname)) {
+            if (ns.bladeburner.getActionEstimatedSuccessChance("blackops", blackopsname)[0] == ns.bladeburner.getActionEstimatedSuccessChance("blackops", blackopsname)[1] && ns.bladeburner.getActionEstimatedSuccessChance("blackops", blackopsname)[1] >= 0.95 && ns.bladeburner.getRank() > ns.bladeburner.getBlackOpRank(blackopsname)) {
                 let t = ns.bladeburner.getActionTime("blackops", blackopsname)
                 let started = ns.bladeburner.startAction("blackops", blackopsname)
                 if (started) {
