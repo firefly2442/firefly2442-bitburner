@@ -85,14 +85,16 @@ export async function main(ns) {
         }
 
         // iterate through operations missions
+        let c = 0
         for (let op of ['Investigation', 'Undercover Operation', 'Sting Operation', 'Raid', 'Stealth Retirement Opeation', 'Assassination']) {
-            while (ns.bladeburner.getActionEstimatedSuccessChance("operations", op)[0] >= 0.99 && ns.bladeburner.getActionEstimatedSuccessChance("operations", op)[1] >= 0.99 && ns.bladeburner.getActionCountRemaining("operations", op) > 0) {
+            while (ns.bladeburner.getActionEstimatedSuccessChance("operations", op)[0] >= 0.99 && ns.bladeburner.getActionEstimatedSuccessChance("operations", op)[1] >= 0.99 && ns.bladeburner.getActionCountRemaining("operations", op) > 0 && c < 50) {
                 let t = ns.bladeburner.getActionTime("operations", op)
                 let started = ns.bladeburner.startAction("operations", op)
                 if (started) {
                     await ns.sleep(t+100)
                 }
                 ns.bladeburner.stopBladeburnerAction()
+                c = c + 1
             }
         }
 

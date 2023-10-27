@@ -3,9 +3,6 @@
 export async function main(ns) {
 
     //https://github.com/bitburner-official/bitburner-src/blob/dev/markdown/bitburner.sleeve.md
-    for (let i = 0; i < ns.sleeve.getNumSleeves(); i++) {
-        ns.sleeve.setToCommitCrime(i, "Mug")
-    }
 
     // while (ns.getPlayer().skills.agility < 100 ||
     //         ns.getPlayer().skills.charisma < 100 ||
@@ -23,14 +20,14 @@ export async function main(ns) {
     ns.toast("Bladeburner started", "success", 6000)
     ns.exec("/scripts/bladeburner/bladeburner.js", "home", 1)
 
-    for (let i = 0; i < ns.sleeve.getNumSleeves(); i++) {
-        ns.sleeve.setToBladeburnerAction(i, "Field Analysis")
-    }
-
     while (ns.exec("/scripts/hacktheplanet.js", "home", 1) == 0) {
 		await ns.sleep(1000)
 	}
     ns.toast("Hacking started", "success", 6000)
+
+    for (let i = 0; i < ns.sleeve.getNumSleeves(); i++) {
+        ns.sleeve.setToIdle(i)
+    }
 
     while (true) {
         await ns.singularity.upgradeHomeRam()
@@ -48,6 +45,40 @@ export async function main(ns) {
             ns.singularity.installAugmentations("/scripts/starter-combat.js")
         }
 
-        await ns.sleep(10000)
+        if (ns.bladeburner.getCityChaos(ns.bladeburner.getCity()) > 3) {
+            for (let i = 0; i < ns.sleeve.getNumSleeves(); i++) {
+                ns.sleeve.setToBladeburnerAction(i, "Diplomacy")
+            }
+            // diplomacy takes 60 seconds
+            await ns.sleep(60100)
+            for (let i = 0; i < ns.sleeve.getNumSleeves(); i++) {
+                ns.sleeve.setToIdle(i)
+            }
+        }
+
+        // iterate through contracts
+        let ops = ['Tracking', 'Bounty Hunter', 'Retirement']
+        for (let i = 0; i < ns.sleeve.getNumSleeves(); i++) {
+            let op = null
+            if (i < 3) {
+                op = ops[i]
+            }
+            if (op != null) {
+                if (ns.bladeburner.getActionEstimatedSuccessChance("contracts", op)[0] >= 0.99 && ns.bladeburner.getActionEstimatedSuccessChance("contracts", op)[1] >= 0.99 && ns.bladeburner.getActionCountRemaining("contracts", op) > 0 && ns.bladeburner.getCityChaos(ns.bladeburner.getCity()) < 3) {
+                    if (ns.sleeve.getTask(i) == null) {
+                        let res = ns.sleeve.setToBladeburnerAction(i, "Take on contracts", op)
+                        if (res) {
+                            continue
+                        } else {
+                            ns.sleeve.setToCommitCrime(i, "Mug")
+                        }
+                    }
+                }
+            } else {
+                ns.sleeve.setToCommitCrime(i, "Mug")
+            }
+        }
+        // wait 2 min.
+        await ns.sleep(120000)
     }
 }
