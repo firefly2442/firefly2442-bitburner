@@ -3,6 +3,8 @@ import * as connect from '/scripts/lib/connect.js';
 
 export async function main(ns) {
 
+	ns.exec("/scripts/stanek/stanek.js", "home", 1)
+
 	ns.singularity.universityCourse("rothman university", "Study Computer Science", false)
 	await ns.sleep(30000) //get some skills right off the bat
 
