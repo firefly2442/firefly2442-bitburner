@@ -18,7 +18,9 @@ export async function main(ns) {
     // ns.singularity.stopAction()
 
     ns.toast("Bladeburner started", "success", 6000)
-    ns.exec("/scripts/bladeburner/bladeburner.js", "home", 1)
+    if (!ns.isRunning("/scripts/bladeburner/bladeburner.js")) {
+        ns.exec("/scripts/bladeburner/bladeburner.js", "home", 1)
+    }
 
     while (ns.exec("/scripts/hacktheplanet.js", "home", 1) == 0) {
 		await ns.sleep(1000)
@@ -45,7 +47,7 @@ export async function main(ns) {
             ns.singularity.installAugmentations("/scripts/starter-combat.js")
         }
 
-        if (ns.bladeburner.getCityChaos(ns.bladeburner.getCity()) > 3) {
+        while (ns.bladeburner.getCityChaos(ns.bladeburner.getCity()) > 3) {
             for (let i = 0; i < ns.sleeve.getNumSleeves(); i++) {
                 ns.sleeve.setToBladeburnerAction(i, "Diplomacy")
             }
@@ -64,21 +66,23 @@ export async function main(ns) {
                 op = ops[i]
             }
             if (op != null) {
-                if (ns.bladeburner.getActionEstimatedSuccessChance("contracts", op)[0] >= 0.99 && ns.bladeburner.getActionEstimatedSuccessChance("contracts", op)[1] >= 0.99 && ns.bladeburner.getActionCountRemaining("contracts", op) > 0 && ns.bladeburner.getCityChaos(ns.bladeburner.getCity()) < 3) {
+                if (ns.bladeburner.getActionEstimatedSuccessChance("contracts", op)[0] >= 0.99 && ns.bladeburner.getActionEstimatedSuccessChance("contracts", op)[1] >= 0.99 && ns.bladeburner.getActionCountRemaining("contracts", op) > 20 && ns.bladeburner.getCityChaos(ns.bladeburner.getCity()) < 3) {
                     if (ns.sleeve.getTask(i) == null) {
                         let res = ns.sleeve.setToBladeburnerAction(i, "Take on contracts", op)
                         if (res) {
                             continue
                         } else {
-                            ns.sleeve.setToCommitCrime(i, "Mug")
+                            ns.sleeve.setToCommitCrime(i, "Heist")
                         }
                     }
+                } else {
+                    ns.sleeve.setToCommitCrime(i, "Heist")
                 }
             } else {
-                ns.sleeve.setToCommitCrime(i, "Mug")
+                ns.sleeve.setToCommitCrime(i, "Heist")
             }
         }
-        // wait 2 min.
-        await ns.sleep(120000)
+        // wait 1 min.
+        await ns.sleep(60000)
     }
 }

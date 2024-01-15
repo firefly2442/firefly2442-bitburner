@@ -31,6 +31,14 @@ export async function main(ns) {
             ns.bladeburner.stopBladeburnerAction()
         }
 
+        // incite violence to get more missions
+        while (ns.bladeburner.getActionCountRemaining("contracts", "Tracking") < 100 || ns.bladeburner.getActionCountRemaining("contracts", "Bounty Hunter") < 100 || ns.bladeburner.getActionCountRemaining("contracts", "Retirement") < 100) {
+            let t = ns.bladeburner.getActionTime("general", "Incite Violence")
+            ns.bladeburner.startAction("general", "Incite Violence")
+            await ns.sleep(t+100)
+            ns.bladeburner.stopBladeburnerAction()
+        }
+
         // look for skills to upgrade
         for (let skill of ns.bladeburner.getSkillNames()) {
             if (ns.bladeburner.upgradeSkill(skill)) {
@@ -38,39 +46,40 @@ export async function main(ns) {
             }
         }
 
-        // look to contract tracking to gain rep and skills
-        let t = ns.bladeburner.getActionTime("contract", "Tracking")
-        ns.bladeburner.startAction("contracts", "Tracking")
-        await ns.sleep(t+100)
-        ns.bladeburner.stopBladeburnerAction()
+        // LEAVE ALL CONTRACTS TO SLEEVES
+        // // look to contract tracking to gain rep and skills
+        // let t = ns.bladeburner.getActionTime("contract", "Tracking")
+        // ns.bladeburner.startAction("contracts", "Tracking")
+        // await ns.sleep(t+100)
+        // ns.bladeburner.stopBladeburnerAction()
 
-        // look to contract bounty hunt if we have good enough intel and good chances
-        if (ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")[0] == ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")[1] && ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")[1] >= 0.95) {
-            let t = ns.bladeburner.getActionTime("contract", "Bounty Hunter")
-            ns.bladeburner.startAction("contracts", "Bounty Hunter")
-            await ns.sleep(t+100)
-            ns.bladeburner.stopBladeburnerAction()
-        }
+        // // look to contract bounty hunt if we have good enough intel and good chances
+        // if (ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")[0] == ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")[1] && ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")[1] >= 0.95) {
+        //     let t = ns.bladeburner.getActionTime("contract", "Bounty Hunter")
+        //     ns.bladeburner.startAction("contracts", "Bounty Hunter")
+        //     await ns.sleep(t+100)
+        //     ns.bladeburner.stopBladeburnerAction()
+        // }
 
-        // look to contract retire if we have good enough intel and good chances
-        if (ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Retirement")[0] == ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Retirement")[1] && ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Retirement")[1] >= 0.95) {
-            let t = ns.bladeburner.getActionTime("contracts", "Retirement")
-            ns.bladeburner.startAction("contracts", "Retirement")
-            await ns.sleep(t+100)
-            ns.bladeburner.stopBladeburnerAction()
-        }
+        // // look to contract retire if we have good enough intel and good chances
+        // if (ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Retirement")[0] == ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Retirement")[1] && ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Retirement")[1] >= 0.95) {
+        //     let t = ns.bladeburner.getActionTime("contracts", "Retirement")
+        //     ns.bladeburner.startAction("contracts", "Retirement")
+        //     await ns.sleep(t+100)
+        //     ns.bladeburner.stopBladeburnerAction()
+        // }
 
-        // gather more intel to narrow the percentages range
-        while (ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")[0] != ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")[1] || ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Retirement")[0] != ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Retirement")[1]) {
-            let t = ns.bladeburner.getActionTime("general", "Field Analysis")
-            ns.bladeburner.startAction("general", "Field Analysis")
-            await ns.sleep(t+100)
-            ns.bladeburner.stopBladeburnerAction()
-        }
+        // // gather more intel to narrow the percentages range
+        // while (ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")[0] != ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Bounty Hunter")[1] || ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Retirement")[0] != ns.bladeburner.getActionEstimatedSuccessChance("contracts", "Retirement")[1]) {
+        //     let t = ns.bladeburner.getActionTime("general", "Field Analysis")
+        //     ns.bladeburner.startAction("general", "Field Analysis")
+        //     await ns.sleep(t+100)
+        //     ns.bladeburner.stopBladeburnerAction()
+        // }
 
         if (ns.getPlayer().skills.strength < 1000 || ns.getPlayer().skills.defense < 1000 || ns.getPlayer().skills.dexterity < 1000 || ns.getPlayer().skills.agility < 1000) {
             // train if we don't meet the requirements
-            t = ns.bladeburner.getActionTime("general", "Training")
+            let t = ns.bladeburner.getActionTime("general", "Training")
             ns.bladeburner.startAction("general", "Training")
             await ns.sleep(t+100)
             ns.bladeburner.stopBladeburnerAction()
@@ -78,7 +87,7 @@ export async function main(ns) {
 
         if (data['recruit'] == "true") {
             // recruit a team
-            t = ns.bladeburner.getActionTime("general", "Recruitment")
+            let t = ns.bladeburner.getActionTime("general", "Recruitment")
             ns.bladeburner.startAction("general", "Recruitment")
             await ns.sleep(t+100)
             ns.bladeburner.stopBladeburnerAction()

@@ -25,8 +25,12 @@ export async function main(ns) {
 		}
 	}
 	// start our career and augmentations checks
-	ns.exec("/scripts/singularity/career.js", "home", 1)
-	ns.exec("/scripts/singularity/augmentations.js", "home", 1)
+	if (!ns.isRunning("/scripts/singularity/career.js")) {
+		ns.exec("/scripts/singularity/career.js", "home", 1)
+	}
+	if (!ns.isRunning("/scripts/singularity/augmentations.js")) {
+		ns.exec("/scripts/singularity/augmentations.js", "home", 1)
+	}
 	try {
 		ns.tprint("Number of sleeves: "+ns.sleeve.getNumSleeves());
 		ns.exec("/scripts/singularity/sleeves.js", "home", 1);
