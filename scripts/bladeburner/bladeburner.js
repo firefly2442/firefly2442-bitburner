@@ -4,7 +4,8 @@ export async function main(ns) {
     // joing the bladeburner requires 100 level stats in strength, defense, dexterity, and agility
     // the gym is an easy way to train this up if you have money
     // then in City Sector-12 (the starting city), go to the NSA and then join them
-    // finishing all the bladeburner black ops can finish the node and provides an alternative
+    // finishing all the bladeburner black ops can finish the node and provides an alternative completion
+    // required rank for this is around 400k
 
     // $ run bladeburner.js --recruit false
 	const data = ns.flags([
